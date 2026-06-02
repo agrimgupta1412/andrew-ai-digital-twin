@@ -1,0 +1,37 @@
+[
+  {
+    "year": 1997,
+    "event": "Andrew Ng received undergraduate degrees from Carnegie Mellon University.",
+    "category": "education",
+    "source": "public biography",
+    "confidence": "medium"
+  },
+  {
+    "year": 2002,
+    "event": "Andrew Ng received his PhD from UC Berkeley.",
+    "category": "education",
+    "source": "public biography",
+    "confidence": "medium"
+  },
+  {
+    "year": 2011,
+    "event": "Andrew Ng co-founded Google Brain.",
+    "category": "career",
+    "source": "public biography",
+    "confidence": "high"
+  },
+  {
+    "year": 2012,
+    "event": "Andrew Ng co-founded Coursera.",
+    "category": "career",
+    "source": "public biography",
+    "confidence": "high"
+  },
+  {
+    "year": 2017,
+    "event": "Andrew Ng founded DeepLearning.AI.",
+    "category": "career",
+    "source": "public biography",
+    "confidence": "high"
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "machine-learning-yearning",
+    "title": "Machine Learning Yearning",
+    "type": "book",
+    "author": "Andrew Ng",
+    "path": "data/raw/machine-learning-yearning.pdf",
+    "url": "https://www.deeplearning.ai/machine-learning-yearning/",
+    "license_or_usage_note": "Public educational material / user-provided local file. Source document is not included in this repository.",
+    "domain": "machine_learning",
+    "include_in_index": true
+  },
+  {
+    "id": "cs229-notes",
+    "title": "Stanford CS229 Lecture Notes",
+    "type": "lecture_notes",
+    "author": "Stanford / Andrew Ng and course contributors",
+    "path": "data/raw/cs229-notes.pdf",
+    "url": "https://cs229.stanford.edu/",
+    "license_or_usage_note": "Public educational material / user-provided local file. Source document is not included in this repository.",
+    "domain": "machine_learning",
+    "include_in_index": true
+  },
+  {
+    "id": "ai-transformation-playbook",
+    "title": "AI Transformation Playbook",
+    "type": "book",
+    "author": "Andrew Ng / Landing AI",
+    "path": "data/raw/ai-transformation-playbook.pdf",
+    "url": "https://d6hi0znd7umn4.cloudfront.net/content/uploads/2018/12/AI-Transformation-Playbook.pdf",
+    "license_or_usage_note": "Public educational material / user-provided local file. Source document is not included in this repository.",
+    "domain": "ai_strategy",
+    "include_in_index": true
+  },
+  {
+    "id": "data-centric-platform-approach",
+    "title": "Data-Centric-AI Development: The Platform Approach",
+    "type": "webpage",
+    "author": "Andrew Ng / DeepLearning.AI",
+    "path": "data/raw/data-centric-platform-approach.html",
+    "url": "https://www.deeplearning.ai/the-batch/data-centric-ai-development-the-platform-approach/",
+    "license_or_usage_note": "Public educational webpage / user-provided local file. Source document is not included in this repository.",
+    "domain": "data_centric_ai",
+    "include_in_index": true
+  },
+  {
+    "id": "data-centric-benchmark",
+    "title": "Data-Centric AI Development: A New Kind of Benchmark",
+    "type": "webpage",
+    "author": "Andrew Ng / DeepLearning.AI",
+    "path": "data/raw/data-centric-benchmark.html",
+    "url": "https://www.deeplearning.ai/the-batch/data-centric-ai-development-a-new-kind-of-benchmark/",
+    "license_or_usage_note": "Public educational webpage / user-provided local file. Source document is not included in this repository.",
+    "domain": "data_centric_ai",
+    "include_in_index": true
+  },
+  {
+    "id": "making-ai-fair-accountable-reliable",
+    "title": "Making AI Fair, Accountable, and Reliable",
+    "type": "webpage",
+    "author": "Andrew Ng / DeepLearning.AI",
+    "path": "data/raw/making-ai-fair-accountable-reliable.html",
+    "url": "https://www.deeplearning.ai/the-batch/making-ai-fair-accountable-and-reliable/",
+    "license_or_usage_note": "Public educational webpage / user-provided local file. Source document is not included in this repository.",
+    "domain": "responsible_ai",
+    "include_in_index": true
+  }
+]
