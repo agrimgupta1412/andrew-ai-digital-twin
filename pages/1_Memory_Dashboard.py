@@ -9,12 +9,12 @@ from src.config import get_settings
 from src.memory_manager import MemoryManager
 
 
-st.set_page_config(page_title="AndrewAI Memory Dashboard", page_icon="Memory", layout="wide")
+st.set_page_config(page_title="Memory Dashboard", page_icon="Memory", layout="wide")
 
 settings = get_settings()
-st.title("AndrewAI Memory Dashboard")
+st.title("Memory Dashboard")
 st.info(
-    "AndrewAI stores only useful learning preferences and project context. "
+    "The digital twin stores only useful learning preferences and project context. "
     "You can inspect, edit, or delete any memory here."
 )
 
@@ -38,7 +38,7 @@ if not memories:
 else:
     df = pd.DataFrame(memories)
     st.dataframe(
-        df[["id", "memory_type", "content", "importance", "created_at", "updated_at"]],
+        df[["id", "memory_type", "content", "importance", "created_at"]],
         use_container_width=True,
         hide_index=True,
     )

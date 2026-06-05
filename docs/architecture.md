@@ -1,14 +1,15 @@
 # Architecture
 
-This page explains how I structured AndrewAI. The dedicated assignment diagram is here: [architecture_diagram.md](architecture_diagram.md).
+This page explains how I structured the digital twin. The dedicated assignment diagram is here: [architecture_diagram.md](architecture_diagram.md).
 
-At a high level, the app has five main parts:
+At a high level, the app has six main parts:
 
 1. Streamlit user interface
 2. Retrieval system
 3. Memory system
 4. Timeline system
 5. Gemini response generation
+6. API key failover and voice interaction
 
 ## Main Chat Flow
 
@@ -59,7 +60,7 @@ If a question has words like "in 2012", "before", "after", "career", or "at that
 
 The prompt builder combines:
 
-- AndrewAI persona instructions
+- Digital twin persona instructions
 - Disclaimer that it is not the real Andrew Ng
 - User question
 - Recent conversation
@@ -71,7 +72,15 @@ The prompt builder combines:
 
 Then Gemini 2.5 Flash generates the final answer.
 
-If Gemini fails because of API key, quota, model name, or network issues, the app shows a clear error message instead of crashing.
+The app supports multiple Gemini API keys through `GOOGLE_API_KEY_1` to `GOOGLE_API_KEY_4`. If one key hits quota, a rate limit, timeout, or temporary availability issue, the Gemini client tries the next configured key. This helps the demo keep working even when one free-tier key is exhausted.
+
+If all Gemini keys fail because of API key, quota, model name, or network issues, the app shows a clear error message or local fallback instead of crashing.
+
+## Voice Interaction
+
+Voice input uses Streamlit's audio recorder. Gemini transcribes the recorded audio into text, and then the transcript goes through the same retrieval, memory, timeline, prompt, and answer-generation pipeline as a typed question.
+
+Voice output uses the browser's built-in text-to-speech. Long answers are split into smaller chunks before speaking so the `Speak answer` button is more reliable.
 
 ## Source Display
 

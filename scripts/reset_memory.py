@@ -15,7 +15,7 @@ from src.memory_manager import MemoryManager
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Reset all long-term AndrewAI memory rows.")
+    parser = argparse.ArgumentParser(description="Reset all long-term digital twin memory rows.")
     parser.add_argument(
         "--user-id",
         help="Only clear memory for this user. If omitted, all long-term memories and summaries are cleared.",

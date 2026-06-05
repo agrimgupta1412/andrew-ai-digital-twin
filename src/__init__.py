@@ -1,2 +1,1 @@
-"""AndrewAI core package."""
-
+"""Digital twin core package."""

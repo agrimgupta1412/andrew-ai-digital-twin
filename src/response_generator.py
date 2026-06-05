@@ -23,6 +23,7 @@ class GeneratedResponse:
     context_confidence: str
     retrieval_status: str = ""
     timeline_events: list[dict[str, Any]] | None = None
+    used_memories: list[dict[str, Any]] | None = None
 
 
 def _extract_relevant_sentences(question: str, chunks: list[dict[str, Any]], limit: int = 3) -> list[str]:
@@ -150,7 +151,7 @@ def is_light_social_message(question: str) -> bool:
 def social_response() -> GeneratedResponse:
     return GeneratedResponse(
         answer=(
-            "I am doing well, thank you. I am AndrewAI, an educational simulation inspired by "
+            "I am doing well, thank you. I am an educational simulation inspired by "
             "Andrew Ng's public teaching style. Ask me an AI or machine learning question, and I will "
             "try to explain it with intuition, a simple example, and practical next steps."
         ),
@@ -174,11 +175,30 @@ class ResponseGenerator:
         conversation_history: list[dict[str, Any]] | None = None,
         response_depth: str = "standard",
     ) -> GeneratedResponse:
+        comparison = self.generate_comparison_response(
+            user_id=user_id,
+            user_question=user_question,
+            conversation_history=conversation_history,
+            response_depths=[response_depth],
+        )
+        return comparison[response_depth.lower()]
+
+    def generate_comparison_response(
+        self,
+        user_id: str,
+        user_question: str,
+        conversation_history: list[dict[str, Any]] | None = None,
+        response_depths: list[str] | None = None,
+    ) -> dict[str, GeneratedResponse]:
         question = user_question.strip()
+        depths = [depth.lower() for depth in (response_depths or ["simple", "standard", "deep"])]
         if not question:
-            return GeneratedResponse("Please enter a question so I can help.", [], "low", "Empty input.")
+            return {
+                depth: GeneratedResponse("Please enter a question so I can help.", [], "low", "Empty input.")
+                for depth in depths
+            }
         if is_light_social_message(question):
-            return social_response()
+            return {depth: social_response() for depth in depths}
 
         history = conversation_history or []
         memories = self.memory.get_relevant_memories(user_id, question, limit=5)
@@ -190,33 +210,39 @@ class ResponseGenerator:
             timeline_events = get_relevant_timeline_events(question, top_k=5)
             timeline_rules = get_timeline_guardrail_text()
 
-        prompt = build_prompt(
-            question=question,
-            conversation_history=history[-10:],
-            memories=memories,
-            retrieved_chunks=retrieval.chunks,
-            context_confidence=retrieval.context_confidence,
-            response_depth=response_depth.lower(),
-            timeline_events=timeline_events,
-            timeline_rules=timeline_rules,
-        )
+        responses: dict[str, GeneratedResponse] = {}
+        for depth in depths:
+            prompt = build_prompt(
+                question=question,
+                conversation_history=history[-10:],
+                memories=memories,
+                retrieved_chunks=retrieval.chunks,
+                context_confidence=retrieval.context_confidence,
+                response_depth=depth,
+                timeline_events=timeline_events,
+                timeline_rules=timeline_rules,
+            )
 
-        try:
-            answer = self.llm.generate(prompt)
-        except LLMError as exc:
-            answer = _fallback_answer(question, retrieval.status_message, no_docs, retrieval.chunks, exc)
+            try:
+                answer = self.llm.generate(prompt)
+            except LLMError as exc:
+                answer = _fallback_answer(question, retrieval.status_message, no_docs, retrieval.chunks, exc)
 
-        candidate = self.memory.extract_memory_candidate(question, answer)
+            responses[depth] = GeneratedResponse(
+                answer=answer,
+                sources=unique_sources(retrieval.chunks),
+                context_confidence=retrieval.context_confidence,
+                retrieval_status=retrieval.status_message,
+                timeline_events=timeline_events,
+                used_memories=memories,
+            )
+
+        standard_answer = responses.get("standard") or next(iter(responses.values()))
+        candidate = self.memory.extract_memory_candidate(question, standard_answer.answer)
         if candidate:
             self.memory.save_memory(user_id, **candidate)
 
-        return GeneratedResponse(
-            answer=answer,
-            sources=unique_sources(retrieval.chunks),
-            context_confidence=retrieval.context_confidence,
-            retrieval_status=retrieval.status_message,
-            timeline_events=timeline_events,
-        )
+        return responses
 
 
 def generate_response(

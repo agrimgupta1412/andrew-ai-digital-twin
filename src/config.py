@@ -1,4 +1,4 @@
-"""Configuration helpers for AndrewAI."""
+"""Configuration helpers for the digital twin."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 @dataclass(frozen=True)
 class Settings:
     google_api_key: str
+    google_api_keys: list[str]
     gemini_model: str
     embedding_model: str
     request_timeout_seconds: int
@@ -36,6 +37,29 @@ def _as_bool(value: str | None, default: bool = True) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "y", "on"}
 
 
+def _load_google_api_keys() -> list[str]:
+    """Load one or more Google API keys while keeping the old single-key setting working."""
+    keys: list[str] = []
+    numbered_keys = [os.getenv(f"GOOGLE_API_KEY_{index}", "").strip() for index in range(1, 5)]
+    keys.extend(key for key in numbered_keys if key)
+
+    combined_keys = os.getenv("GOOGLE_API_KEYS", "")
+    if combined_keys.strip():
+        keys.extend(key.strip() for key in combined_keys.split(",") if key.strip())
+
+    legacy_key = os.getenv("GOOGLE_API_KEY", "").strip()
+    if legacy_key:
+        keys.append(legacy_key)
+
+    unique_keys: list[str] = []
+    seen: set[str] = set()
+    for key in keys:
+        if key not in seen:
+            unique_keys.append(key)
+            seen.add(key)
+    return unique_keys
+
+
 def get_settings() -> Settings:
     """Load settings from .env and environment variables."""
     load_dotenv(PROJECT_ROOT / ".env")
@@ -52,9 +76,11 @@ def get_settings() -> Settings:
 
     chroma_dir = PROJECT_ROOT / os.getenv("CHROMA_DB_DIR", "vectorstore")
     memory_db = PROJECT_ROOT / os.getenv("SQLITE_MEMORY_DB", "memory/memory.db")
+    google_api_keys = _load_google_api_keys()
 
     return Settings(
-        google_api_key=os.getenv("GOOGLE_API_KEY", "").strip(),
+        google_api_key=google_api_keys[0] if google_api_keys else "",
+        google_api_keys=google_api_keys,
         gemini_model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip(),
         embedding_model=os.getenv("EMBEDDING_MODEL", "text-embedding-004").strip(),
         request_timeout_seconds=request_timeout_seconds,

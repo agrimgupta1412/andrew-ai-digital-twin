@@ -1,4 +1,4 @@
-"""Validate timeline JSON used by AndrewAI."""
+"""Validate timeline JSON used by the digital twin."""
 
 from __future__ import annotations
 

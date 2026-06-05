@@ -18,6 +18,8 @@ def unique_sources(chunks: list[dict]) -> list[dict]:
                 "page": chunk.get("page"),
                 "url": chunk.get("url", ""),
                 "score": chunk.get("score", 0),
+                "vector_score": chunk.get("vector_score", 0),
+                "bm25_score": chunk.get("bm25_score", 0),
                 "retrieval_method": chunk.get("retrieval_method", ""),
             }
         )
@@ -35,4 +37,3 @@ def format_sources(chunks: list[dict]) -> str:
         url = source.get("url") or "no URL"
         lines.append(f"{index}. {source['source_title']} - {page_text} - {url}")
     return "\n".join(lines)
-

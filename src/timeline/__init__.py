@@ -1,1 +1,1 @@
-"""Timeline awareness helpers for AndrewAI."""
+"""Timeline awareness helpers for the digital twin."""

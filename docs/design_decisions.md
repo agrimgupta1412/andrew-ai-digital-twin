@@ -14,6 +14,8 @@ The assignment required Gemini as the main LLM, so I used Gemini 2.5 Flash for a
 
 The model name is stored in `.env`, which makes it easier to change later if needed.
 
+I also added support for multiple Gemini API keys because the free-tier quota can get exhausted during testing. The app can load `GOOGLE_API_KEY_1` to `GOOGLE_API_KEY_4` and try the next key if one key hits quota, rate limits, timeout, or temporary availability errors. This was added after we saw `429 quota exceeded` errors during voice transcription and normal chat testing.
+
 ## Why Streamlit?
 
 I used Streamlit because it is good for quickly building a working ML demo. It gives chat UI, buttons, sidebars, session state, and extra pages without needing a full frontend framework.
@@ -60,6 +62,10 @@ The app is clearly labeled as an AI simulation inspired by Andrew Ng's public te
 
 This is important because the goal is educational simulation, not pretending to be a real person.
 
-## Why No Voice Feature?
+## Why Add Voice Interaction?
 
-Voice interaction is listed as future work. I focused on the features that were more important for the assignment: RAG, memory, timeline awareness, source display, and documentation.
+Voice interaction was added so the chatbot can be used more like a conversational digital twin. The user can record a spoken question, Gemini transcribes it, and the answer can be read aloud through the browser.
+
+I used browser text-to-speech for output because it avoids adding another paid API. For input, I used Gemini transcription so the voice question becomes normal text before going through the same RAG, memory, and timeline pipeline.
+
+I did not add Andrew Ng's exact voice. Browser text-to-speech only provides generic system voices, and I could not find a free reliable tool that could directly create an Andrew Ng-style voice inside the Streamlit project. Most good voice cloning options need paid APIs, GPU setup, long training time, or prepared voice datasets. Because of that, using a neutral browser voice was the more practical choice for this assignment.

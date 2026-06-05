@@ -1,6 +1,6 @@
 # Evaluation Plan
 
-This is how I would test whether AndrewAI is working properly.
+This is how I would test whether the digital twin is working properly.
 
 ## 1. Persona And Teaching Style
 
