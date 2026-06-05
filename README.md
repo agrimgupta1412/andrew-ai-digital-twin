@@ -53,22 +53,7 @@ The goal is not to impersonate him. The goal is to simulate some parts of his pu
 
 The full architecture diagram is in [docs/architecture_diagram.md](docs/architecture_diagram.md).
 
-```mermaid
-flowchart TD
-    USER[User] --> UI[Streamlit Chat UI]
-    UI --> CONTEXT[Collect Context\nRAG + Memory + Timeline]
-    CONTEXT --> PROMPT[Prompt Builder]
-    PROMPT --> GEMINI[Gemini 2.5 Flash\nAPI Key Rotation]
-    GEMINI --> ANSWER[Final Answer + Sources]
-
-    DOCS[Source Documents] --> RAG[RAG Retrieval\nChromaDB + BM25]
-    RAG --> CONTEXT
-    MEMORY[Memory\nSession + SQLite] --> CONTEXT
-    TIMELINE[Timeline\nAndrew Ng JSON] --> CONTEXT
-
-    UI --> DASHBOARD[Memory Dashboard]
-    UI --> VOICE[Voice Layer\nSpeech Input + Browser TTS]
-```
+![Simplified architecture diagram](docs/architecture_diagram.png)
 
 ## Key USPs
 

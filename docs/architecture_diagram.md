@@ -2,22 +2,7 @@
 
 This is the simplified architecture diagram for the assignment. It focuses on the main flow: the user asks a question, the app gathers context, Gemini generates an answer, and the answer is shown back to the user.
 
-```mermaid
-flowchart TD
-    USER[User] --> UI[Streamlit Chat UI]
-    UI --> CONTEXT[Collect Context\nRAG + Memory + Timeline]
-    CONTEXT --> PROMPT[Prompt Builder]
-    PROMPT --> GEMINI[Gemini 2.5 Flash\nAPI Key Rotation]
-    GEMINI --> ANSWER[Final Answer + Sources]
-
-    DOCS[Source Documents] --> RAG[RAG Retrieval\nChromaDB + BM25]
-    RAG --> CONTEXT
-    MEMORY[Memory\nSession + SQLite] --> CONTEXT
-    TIMELINE[Timeline\nAndrew Ng JSON] --> CONTEXT
-
-    UI --> DASHBOARD[Memory Dashboard]
-    UI --> VOICE[Voice Layer\nSpeech Input + Browser TTS]
-```
+![Simplified architecture diagram](architecture_diagram.png)
 
 ## Component Summary
 
