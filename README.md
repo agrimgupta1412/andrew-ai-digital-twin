@@ -55,34 +55,19 @@ The full architecture diagram is in [docs/architecture_diagram.md](docs/architec
 
 ```mermaid
 flowchart TD
-    A[User] --> B[Streamlit Chat UI]
+    USER[User] --> UI[Streamlit Chat UI]
+    UI --> CONTEXT[Collect Context\nRAG + Memory + Timeline]
+    CONTEXT --> PROMPT[Prompt Builder]
+    PROMPT --> GEMINI[Gemini 2.5 Flash\nAPI Key Rotation]
+    GEMINI --> ANSWER[Final Answer + Sources]
 
-    B --> C[Memory Manager]
-    C --> D[Short-Term Session Memory]
-    C --> E[Long-Term SQLite Memory]
+    DOCS[Source Documents] --> RAG[RAG Retrieval\nChromaDB + BM25]
+    RAG --> CONTEXT
+    MEMORY[Memory\nSession + SQLite] --> CONTEXT
+    TIMELINE[Timeline\nAndrew Ng JSON] --> CONTEXT
 
-    B --> F[RAG Retriever]
-    F --> G[ChromaDB Vector Store]
-    F --> M[BM25 Keyword Retriever]
-    G --> H[Retrieved Source Chunks]
-    M --> H
-    H --> N[Simple Reranker]
-
-    B --> T[Timeline Retriever]
-    T --> TDB[Andrew Ng Timeline JSON]
-    TDB --> TC[Timeline Context]
-
-    D --> I[Prompt Builder]
-    E --> I
-    N --> I
-    TC --> I
-
-    I --> J[Gemini 2.5 Flash]
-    J --> K[Andrew Ng-Inspired Response]
-    K --> B
-
-    B --> L[Save Useful Memories]
-    E --> MD[Memory Dashboard]
+    UI --> DASHBOARD[Memory Dashboard]
+    UI --> VOICE[Voice Layer\nSpeech Input + Browser TTS]
 ```
 
 ## Key USPs
